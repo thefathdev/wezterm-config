@@ -1,16 +1,16 @@
 local wezterm = require("wezterm")
 
--- Define the colors for Tokyo Night (night variant)
-local tokyo_night = {
-	foreground = "#c0caf5",
-	background = "#1a1b26",
-	cursor_bg = "#c0caf5",
-	cursor_border = "#c0caf5",
-	cursor_fg = "#1a1b26",
-	selection_bg = "#33467c",
-	selection_fg = "#c0caf5",
-	ansi = { "#15161e", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6" },
-	brights = { "#414868", "#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5" },
+-- Define the colors for Rose Pine
+local rose_pine = {
+	foreground = "#e0def4",
+	background = "#191724",
+	cursor_bg = "#e0def4",
+	cursor_border = "#e0def4",
+	cursor_fg = "#191724",
+	selection_bg = "#403d52",
+	selection_fg = "#e0def4",
+	ansi = { "#26233a", "#eb6f92", "#31748f", "#f6c177", "#9ccfd8", "#c4a7e7", "#ebbcba", "#e0def4" },
+	brights = { "#6e6a86", "#eb6f92", "#31748f", "#f6c177", "#9ccfd8", "#c4a7e7", "#ebbcba", "#e0def4" },
 }
 
 -- Custom tab bar
@@ -24,16 +24,14 @@ end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
 	local title = tab_title(tab)
-	local background = tokyo_night.background
-	local foreground = tokyo_night.foreground
-
+	local background = rose_pine.background
+	local foreground = rose_pine.foreground
 	if tab.is_active then
-		background = tokyo_night.ansi[5] -- Active tab color (blue)
-		foreground = tokyo_night.background
+		background = rose_pine.ansi[5] -- Active tab color (cyan)
+		foreground = rose_pine.background
 	elseif hover then
-		background = tokyo_night.brights[1] -- Hover color
+		background = rose_pine.brights[1] -- Hover color
 	end
-
 	return {
 		{ Background = { Color = background } },
 		{ Foreground = { Color = foreground } },
@@ -45,41 +43,35 @@ end)
 local function fancy_tab_bar(window)
 	local tabs = window:mux_window():tabs_with_info()
 	local tab_elements = {}
-
 	for i, tab in ipairs(tabs) do
 		local title = tab_title(tab)
-		local background = tokyo_night.background
-		local foreground = tokyo_night.foreground
-
+		local background = rose_pine.background
+		local foreground = rose_pine.foreground
 		if tab.is_active then
-			background = tokyo_night.ansi[5] -- Active tab color (blue)
-			foreground = tokyo_night.background
+			background = rose_pine.ansi[5] -- Active tab color (cyan)
+			foreground = rose_pine.background
 		end
-
 		table.insert(tab_elements, { Background = { Color = background } })
 		table.insert(tab_elements, { Foreground = { Color = foreground } })
 		table.insert(tab_elements, { Text = " " .. i .. ": " .. title .. " " })
 	end
-
 	return tab_elements
 end
 
 local config = {
 	-- Enable fullscreen mode on startup
 	default_gui_startup_args = { "start", "--maximized" },
-
 	-- Custom tab bar settings
 	use_fancy_tab_bar = false,
 	tab_bar_at_bottom = true,
 	tab_max_width = 25,
 	hide_tab_bar_if_only_one_tab = true,
-
 	-- Custom status bar with tabs
 	window_frame = {
 		font = wezterm.font({ family = "Cascadia Code NF", weight = "Bold" }),
 		font_size = 11.0,
-		active_titlebar_bg = tokyo_night.background,
-		inactive_titlebar_bg = tokyo_night.background,
+		active_titlebar_bg = rose_pine.background,
+		inactive_titlebar_bg = rose_pine.background,
 	},
 	window_padding = {
 		left = 0,
@@ -87,24 +79,18 @@ local config = {
 		top = 0,
 		bottom = 0,
 	},
-
 	-- Set font family
 	font = wezterm.font("Cascadia Code NF"),
 	-- Set font size
 	font_size = 11,
-
 	-- Set line height (as a multiplier of the font size)
 	line_height = 1.2,
-
-	-- Apply the Tokyo Night theme
-	colors = tokyo_night,
-
+	-- Apply the Rose Pine theme
+	colors = rose_pine,
 	-- Hide the title bar and use custom window decorations
 	window_decorations = "INTEGRATED_BUTTONS|RESIZE",
-
 	-- Optional: Set the background opacity if you want a slight transparency
 	-- window_background_opacity = 0.95,
-
 	-- Custom key bindings for tab management
 	keys = {
 		{ key = "t", mods = "CTRL", action = wezterm.action({ SpawnTab = "DefaultDomain" }) },
